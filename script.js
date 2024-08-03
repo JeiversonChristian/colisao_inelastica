@@ -26,10 +26,12 @@ window.onload = function() {
     // Esfera -------------------------------------------------------------------------
     m = 100;
     r = (m**(1/2))*(1.5);
-    dist_parede = canvas.height/2;
-    v = 5;
+    dist_parede = r;
     x = canvas.width/2;
     y = dist_parede;
+    g = 9.78;
+    v = 0;
+    colidiu = false;
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
@@ -45,7 +47,14 @@ window.onload = function() {
 
     // --------------------------------------------------------------------------------
     function atualizar_posicao(){
-        y += v;
+        v += g; 
+        if (y + r + v >= canvas.height) {
+            y = canvas.height - r;
+            colidiu = true;
+        }
+        if (colidiu == false) {
+            y += v;
+        }
     }
     // --------------------------------------------------------------------------------
 
@@ -63,8 +72,8 @@ window.onload = function() {
             window.lastTime = timestamp;
             // atualiza esse tempo como o tempo atual e depois espera passar de novo
             limpar_tela();
-            desenhar_esfera();
             atualizar_posicao();
+            desenhar_esfera();
         }
         requestAnimationFrame(rodar_simulacao);
     }
