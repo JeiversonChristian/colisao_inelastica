@@ -19,6 +19,7 @@ window.onload = function() {
     window.lastTime = 0; // último tempo decorrido
 
     play = false;
+    pause = false;
     // --------------------------------------------------------------------------------
 
     // Esfera -------------------------------------------------------------------------
@@ -36,13 +37,20 @@ window.onload = function() {
     // --------------------------------------------------------------------------------
 
     // Imagens ------------------------------------------------------------------------
+    // play
     const img_play = new Image();
     img_play.src = 'imagens/play-button.png';
-
     const ximg_play = canvas.width - 60;
     const yimg_play = canvas.height - 60;
     const larg_play = canvas.width/11;
     const alt_play = canvas.width/11;
+    // pause
+    const img_pause = new Image();
+    img_pause.src = 'imagens/pause-button.png';
+    const ximg_pause = canvas.width - 105;
+    const yimg_pause = canvas.height - 60;
+    const larg_pause = canvas.width/11;
+    const alt_pause = canvas.width/11;
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
@@ -58,6 +66,11 @@ window.onload = function() {
         // Verifica se o clique ou toque ocorreu dentro da área da imagem
         if (clickX >= ximg_play && clickX <= ximg_play + larg_play && clickY >= yimg_play && clickY <= yimg_play + alt_play) {
             play = true;
+            pause = false;
+        }
+        //pause
+        if (clickX >= ximg_pause && clickX <= ximg_pause + larg_pause && clickY >= yimg_pause && clickY <= yimg_pause + alt_pause) {
+            pause = true;
         }
     }
     // --------------------------------------------------------------------------------
@@ -92,12 +105,21 @@ window.onload = function() {
         ctx.fillStyle = 'green';
         ctx.fill();
         ctx.drawImage(img_play, ximg_play, yimg_play, larg_play, alt_play);
+        //pause
+        xfundo_pause = ximg_pause + larg_pause/2;
+        yfundo_pause = yimg_pause + alt_pause/2;
+        rfundo_pause = larg_pause/2;
+        ctx.beginPath();
+        ctx.arc(xfundo_pause, yfundo_pause, rfundo_pause, 0, Math.PI*2, false);
+        ctx.fillStyle = 'red';
+        ctx.fill();
+        ctx.drawImage(img_pause, ximg_pause, yimg_pause, larg_pause, alt_pause);
     }
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
     function atualizar_posicao(){
-        if (parou == false && play == true) {
+        if (parou == false && play == true && pause == false) {
             // atualiza velocidade de acordo com a gravidade e a direção
             v += g * dir_v; 
             // se chegou no chão (caindo)
