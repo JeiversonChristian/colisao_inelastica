@@ -12,13 +12,13 @@ window.onload = function() {
 
     // Redimensiona o canvas quando a janela é redimensionada
     window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    
+    resizeCanvas();  
     
     window.fps = 30; // frames per second
     window.interval = 1000/fps; // 1000 milisegundos (1s) divididos em fps (30) partes
     window.lastTime = 0; // último tempo decorrido
+
+    play = false;
     // --------------------------------------------------------------------------------
 
     // Esfera -------------------------------------------------------------------------
@@ -35,9 +35,44 @@ window.onload = function() {
     parou = false;
     // --------------------------------------------------------------------------------
 
+    // Imagens ------------------------------------------------------------------------
+    const img_play = new Image();
+    img_play.src = 'imagens/play-button.png';
+
+    const ximg_play = canvas.width - 60;
+    const yimg_play = canvas.height - 60;
+    const larg_play = canvas.width/11;
+    const alt_play = canvas.width/11;
+    // --------------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------------
+    function checar_clique(event){
+        // Obtém as coordenadas do clique ou toque em relação ao canvas
+        const rect = canvas.getBoundingClientRect();
+        const clientX = event.clientX || event.touches[0].clientX;
+        const clientY = event.clientY || event.touches[0].clientY;
+        const clickX = clientX - rect.left;
+        const clickY = clientY - rect.top;
+        
+        //play
+        // Verifica se o clique ou toque ocorreu dentro da área da imagem
+        if (clickX >= ximg_play && clickX <= ximg_play + larg_play && clickY >= yimg_play && clickY <= yimg_play + alt_play) {
+            play = true;
+        }
+    }
+    // --------------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------------
+    function verificar_botoes(){
+        // Adiciona ouvintes de eventos de clique e toque ao canvas
+        canvas.addEventListener('click', checar_clique);
+        canvas.addEventListener('touchstart', checar_clique);
+    }
+    // --------------------------------------------------------------------------------
+
     // --------------------------------------------------------------------------------
     function desenhar_esfera(){
-        // esfera 1 
+        // esfera
         ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI*2, false);
         ctx.fillStyle = 'blue';
@@ -47,8 +82,17 @@ window.onload = function() {
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
+    function desenhar_botoes(){
+        // play 
+        ctx.fillStyle = 'black';
+        ctx.fillRect(ximg_play, yimg_play, larg_play, alt_play);
+        ctx.drawImage(img_play, ximg_play, yimg_play, larg_play, alt_play);
+    }
+    // --------------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------------
     function atualizar_posicao(){
-        if (parou == false) {
+        if (parou == false && play == true) {
             // atualiza velocidade de acordo com a gravidade e a direção
             v += g * dir_v; 
             // se chegou no chão (caindo)
@@ -90,16 +134,18 @@ window.onload = function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     // --------------------------------------------------------------------------------
-    
+
     // --------------------------------------------------------------------------------
     function rodar_simulacao(timestamp){
         // se já passou mais tempo do que o tamanho de um dos 30 pedacinhos de tempo definidos acima
         if (timestamp - window.lastTime >= window.interval) {
             window.lastTime = timestamp;
             // atualiza esse tempo como o tempo atual e depois espera passar de novo
+            verificar_botoes();
             limpar_tela();
             atualizar_posicao();
             desenhar_esfera();
+            desenhar_botoes();
         }
         requestAnimationFrame(rodar_simulacao);
     }
