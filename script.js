@@ -84,8 +84,13 @@ window.onload = function() {
     // --------------------------------------------------------------------------------
     function desenhar_botoes(){
         // play 
-        ctx.fillStyle = 'black';
-        ctx.fillRect(ximg_play, yimg_play, larg_play, alt_play);
+        xfundo_play = ximg_play + larg_play/2;
+        yfundo_play = yimg_play + alt_play/2;
+        rfundo_play = larg_play/2;
+        ctx.beginPath();
+        ctx.arc(xfundo_play, yfundo_play, rfundo_play, 0, Math.PI*2, false);
+        ctx.fillStyle = 'green';
+        ctx.fill();
         ctx.drawImage(img_play, ximg_play, yimg_play, larg_play, alt_play);
     }
     // --------------------------------------------------------------------------------
