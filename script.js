@@ -5,8 +5,6 @@ window.onload = function() {
     const ctx = canvas.getContext('2d');
 
     // Ajusta o canvas para preencher o espaço disponível
-    lc = 0; // largura canvas
-    ac = 0; // altura canvas
     function resizeCanvas() {
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.clientHeight;
@@ -24,14 +22,17 @@ window.onload = function() {
     // --------------------------------------------------------------------------------
 
     // Esfera -------------------------------------------------------------------------
-    m = 100;
-    r = (m**(1/2))*(1.5);
-    dist_parede = r;
+    m = 100; // massa
+    r = (m**(1/2))*(1.5); // raio
+    dist_teto = r; // distância inicial até o "teto"
     x = canvas.width/2;
-    y = dist_parede;
+    y = dist_teto;
     g = 9.78;
     v = 0;
+    dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
     colidiu = false;
+    coef_rest = 0.9; // coeficiente de restituição
+    parou = false;
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
@@ -41,19 +42,44 @@ window.onload = function() {
         ctx.arc(x, y, r, 0, Math.PI*2, false);
         ctx.fillStyle = 'blue';
         ctx.fill();
-        //ctx.stroke();
+        ctx.stroke();
     }
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
     function atualizar_posicao(){
-        v += g; 
-        if (y + r + v >= canvas.height) {
-            y = canvas.height - r;
-            colidiu = true;
-        }
-        if (colidiu == false) {
-            y += v;
+        if (parou == false) {
+            // atualiza velocidade de acordo com a gravidade e a direção
+            v += g * dir_v; 
+            // se chegou no chão (caindo)
+            if (y + r + v >= canvas.height && dir_v == 1) {
+                // gruda na parede
+                y = canvas.height - r;
+                // acusa colisão
+                colidiu = true;
+                // muda direção de movimento (pra subir)
+                dir_v = -1;
+                // calcula nova velocidade
+                v = v * coef_rest;
+                // velocidade máxima para não bugar o movimento
+                if (v < r/2) {
+                    parou = true;
+                }
+            }
+            // so mexe se não colidiu, porque se colidir, tem que grudar na parede primeiro
+            if (colidiu == false) {
+                y += v * dir_v;
+            }
+            // se chegou na altura máxima (quando v == 0)
+            if (v <= 0) {
+                // tem que cair
+                dir_v = 1;
+            }
+            // se mudar de direção quando caiu, então tem que desgrudar do chão
+            // ou seja, a colisão já aconteceu e tem que ser desconsiderada
+            if (dir_v == -1){
+                colidiu = false;
+            }
         }
     }
     // --------------------------------------------------------------------------------
