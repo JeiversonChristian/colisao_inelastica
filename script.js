@@ -54,8 +54,8 @@ window.onload = function() {
     function checar_clique(event){
         // Obtém as coordenadas do clique ou toque em relação ao canvas
         const rect = canvas.getBoundingClientRect();
-        const clientX = event.clientX || event.touches[0].clientX;
-        const clientY = event.clientY || event.touches[0].clientY;
+        const clientX = event.clientX //|| event.touches[0].clientX;
+        const clientY = event.clientY //|| event.touches[0].clientY;
         const clickX = clientX - rect.left;
         const clickY = clientY - rect.top;
         
