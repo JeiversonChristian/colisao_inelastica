@@ -20,6 +20,7 @@ window.onload = function() {
 
     play = false;
     pause = true;
+    parou = false;
     // --------------------------------------------------------------------------------
 
     // Esfera -------------------------------------------------------------------------
@@ -33,7 +34,6 @@ window.onload = function() {
     dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
     colidiu = false;
     coef_rest = 0.9; // coeficiente de restituição
-    parou = false;
     // --------------------------------------------------------------------------------
 
     // Imagens ------------------------------------------------------------------------
@@ -43,7 +43,10 @@ window.onload = function() {
     // pause
     const img_pause = new Image();
     img_pause.src = 'imagens/pause-button.png';
-    // coordenadas dos botões de play e pause:
+    // restart
+    const img_restart = new Image();
+    img_restart.src = 'imagens/restart-button.png';
+    // coordenadas dos botões de play, pause e restart:
     const ximg_p = canvas.width - 60;
     const yimg_p = canvas.height - 60;
     const larg_p = canvas.width/11;
@@ -54,19 +57,35 @@ window.onload = function() {
     function checar_clique(event){
         // Obtém as coordenadas do clique ou toque em relação ao canvas
         const rect = canvas.getBoundingClientRect();
-        const clientX = event.clientX //|| event.touches[0].clientX;
+        const clientX = event.clientX //|| event.touches[0].clientX; --> não precisou dessa parte, mas a deixei pra consultar depois
         const clientY = event.clientY //|| event.touches[0].clientY;
         const clickX = clientX - rect.left;
         const clickY = clientY - rect.top;
         
         if (clickX >= ximg_p && clickX <= ximg_p + larg_p && clickY >= yimg_p && clickY <= yimg_p + alt_p) {
+            // play
             if (pause == true){
                 play = true;
                 pause = false;
             }
+            // pause
             else if (play == true){
                 pause = true;
                 play =  false;
+            }
+            // restart
+            if (parou == true){
+                play = false;
+                pause = true;
+                parou = false;
+                m = 100; // massa
+                r = (m**(1/2))*(1.5); // raio
+                dist_teto = r; // distância inicial até o "teto"
+                y = dist_teto;
+                v = 0;
+                dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
+                colidiu = false;
+                coef_rest = 0.9; // coeficiente de restituição
             }
         }
     }
@@ -97,20 +116,31 @@ window.onload = function() {
         yfundo_p = yimg_p + alt_p/2;
         rfundo_p = larg_p/2;
         // play
-        if (play == false){ 
+        if (play == false && parou == false){ 
             ctx.beginPath();
             ctx.arc(xfundo_p, yfundo_p, rfundo_p, 0, Math.PI*2, false);
             ctx.fillStyle = 'green';
             ctx.fill();
+            ctx.stroke();
             ctx.drawImage(img_play, ximg_p, yimg_p, larg_p, alt_p);
         }
-        //pause
-        if (pause == false){
+        // pause
+        if (pause == false && parou == false){
             ctx.beginPath();
             ctx.arc(xfundo_p, yfundo_p, rfundo_p, 0, Math.PI*2, false);
             ctx.fillStyle = 'red';
             ctx.fill();
+            ctx.stroke();
             ctx.drawImage(img_pause, ximg_p, yimg_p, larg_p, alt_p);
+        }
+        // restart
+        if (parou == true){
+            ctx.beginPath();
+            ctx.arc(xfundo_p, yfundo_p, rfundo_p, 0, Math.PI*2, false);
+            ctx.fillStyle = 'orange';
+            ctx.fill();
+            ctx.stroke();
+            ctx.drawImage(img_restart, ximg_p, yimg_p, larg_p, alt_p);
         }
     }
     // --------------------------------------------------------------------------------
