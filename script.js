@@ -19,7 +19,7 @@ window.onload = function() {
     window.lastTime = 0; // último tempo decorrido
 
     play = false;
-    pause = false;
+    pause = true;
     // --------------------------------------------------------------------------------
 
     // Esfera -------------------------------------------------------------------------
@@ -40,17 +40,14 @@ window.onload = function() {
     // play
     const img_play = new Image();
     img_play.src = 'imagens/play-button.png';
-    const ximg_play = canvas.width - 60;
-    const yimg_play = canvas.height - 60;
-    const larg_play = canvas.width/11;
-    const alt_play = canvas.width/11;
     // pause
     const img_pause = new Image();
     img_pause.src = 'imagens/pause-button.png';
-    const ximg_pause = canvas.width - 105;
-    const yimg_pause = canvas.height - 60;
-    const larg_pause = canvas.width/11;
-    const alt_pause = canvas.width/11;
+    // coordenadas dos botões de play e pause:
+    const ximg_p = canvas.width - 60;
+    const yimg_p = canvas.height - 60;
+    const larg_p = canvas.width/11;
+    const alt_p = canvas.width/11;
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
@@ -62,15 +59,15 @@ window.onload = function() {
         const clickX = clientX - rect.left;
         const clickY = clientY - rect.top;
         
-        //play
-        // Verifica se o clique ou toque ocorreu dentro da área da imagem
-        if (clickX >= ximg_play && clickX <= ximg_play + larg_play && clickY >= yimg_play && clickY <= yimg_play + alt_play) {
-            play = true;
-            pause = false;
-        }
-        //pause
-        if (clickX >= ximg_pause && clickX <= ximg_pause + larg_pause && clickY >= yimg_pause && clickY <= yimg_pause + alt_pause) {
-            pause = true;
+        if (clickX >= ximg_p && clickX <= ximg_p + larg_p && clickY >= yimg_p && clickY <= yimg_p + alt_p) {
+            if (pause == true){
+                play = true;
+                pause = false;
+            }
+            else if (play == true){
+                pause = true;
+                play =  false;
+            }
         }
     }
     // --------------------------------------------------------------------------------
@@ -96,24 +93,25 @@ window.onload = function() {
 
     // --------------------------------------------------------------------------------
     function desenhar_botoes(){
-        // play 
-        xfundo_play = ximg_play + larg_play/2;
-        yfundo_play = yimg_play + alt_play/2;
-        rfundo_play = larg_play/2;
-        ctx.beginPath();
-        ctx.arc(xfundo_play, yfundo_play, rfundo_play, 0, Math.PI*2, false);
-        ctx.fillStyle = 'green';
-        ctx.fill();
-        ctx.drawImage(img_play, ximg_play, yimg_play, larg_play, alt_play);
+        xfundo_p = ximg_p + larg_p/2;
+        yfundo_p = yimg_p + alt_p/2;
+        rfundo_p = larg_p/2;
+        // play
+        if (play == false){ 
+            ctx.beginPath();
+            ctx.arc(xfundo_p, yfundo_p, rfundo_p, 0, Math.PI*2, false);
+            ctx.fillStyle = 'green';
+            ctx.fill();
+            ctx.drawImage(img_play, ximg_p, yimg_p, larg_p, alt_p);
+        }
         //pause
-        xfundo_pause = ximg_pause + larg_pause/2;
-        yfundo_pause = yimg_pause + alt_pause/2;
-        rfundo_pause = larg_pause/2;
-        ctx.beginPath();
-        ctx.arc(xfundo_pause, yfundo_pause, rfundo_pause, 0, Math.PI*2, false);
-        ctx.fillStyle = 'red';
-        ctx.fill();
-        ctx.drawImage(img_pause, ximg_pause, yimg_pause, larg_pause, alt_pause);
+        if (pause == false){
+            ctx.beginPath();
+            ctx.arc(xfundo_p, yfundo_p, rfundo_p, 0, Math.PI*2, false);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+            ctx.drawImage(img_pause, ximg_p, yimg_p, larg_p, alt_p);
+        }
     }
     // --------------------------------------------------------------------------------
 
