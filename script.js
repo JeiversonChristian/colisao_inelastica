@@ -53,6 +53,11 @@ window.onload = function() {
     const alt_p = canvas.width/11;
     // --------------------------------------------------------------------------------
 
+    // Sons ---------------------------------------------------------------------------
+    const som_colisao = new Audio('sons/colisao.mp3');
+    som_colisao.volume = 1;
+    // --------------------------------------------------------------------------------
+
     // --------------------------------------------------------------------------------
     function checar_clique(event){
         // Obtém as coordenadas do clique ou toque em relação ao canvas
@@ -87,6 +92,7 @@ window.onload = function() {
                 dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
                 colidiu = false;
                 coef_rest = 0.9; // coeficiente de restituição
+                som_colisao.volume = 1;
             }
         }
         // coef_rest
@@ -215,6 +221,10 @@ window.onload = function() {
                 dir_v = -1;
                 // calcula nova velocidade
                 v = v * coef_rest;
+                // solta o som e o diminui para a próxima colisao
+                som_colisao.currentTime = 0;
+                som_colisao.play();
+                som_colisao.volume = 0.7*som_colisao.volume;
                 // velocidade máxima para não bugar o movimento
                 if (coef_rest >= 0.5 && coef_rest <= 1){
                     limite = 2;
