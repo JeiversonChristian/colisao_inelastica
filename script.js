@@ -56,6 +56,8 @@ window.onload = function() {
     // Sons ---------------------------------------------------------------------------
     const som_colisao = new Audio('sons/colisao.mp3');
     som_colisao.volume = 1;
+    const som_botao = new Audio('sons/botao.mp3');
+    som_botao.volume = 0.5;
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
@@ -98,11 +100,19 @@ window.onload = function() {
         // coef_rest
         // +
         if (clickX >= x_cr && clickX <= x_cr + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
-            coef_rest += 0.10;
+            if (coef_rest <= 0.90){
+                coef_rest += 0.10;
+                som_botao.currentTime = 0;
+                som_botao.play();
+            }
         }
         // -
         if (clickX >= x_cr2 && clickX <= x_cr2 + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
-            coef_rest -= 0.10;
+            if (coef_rest >= 0.10){
+                coef_rest -= 0.10;
+                som_botao.currentTime = 0;
+                som_botao.play();
+            }
         }
     }
     // --------------------------------------------------------------------------------
