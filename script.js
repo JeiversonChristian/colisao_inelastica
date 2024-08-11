@@ -62,6 +62,7 @@ window.onload = function() {
         const clickX = clientX - rect.left;
         const clickY = clientY - rect.top;
         
+        // play / pause / restart
         if (clickX >= ximg_p && clickX <= ximg_p + larg_p && clickY >= yimg_p && clickY <= yimg_p + alt_p) {
             // play
             if (pause == true){
@@ -87,6 +88,15 @@ window.onload = function() {
                 colidiu = false;
                 coef_rest = 0.9; // coeficiente de restituição
             }
+        }
+        // coef_rest
+        // +
+        if (clickX >= x_cr && clickX <= x_cr + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
+            coef_rest += 0.10;
+        }
+        // -
+        if (clickX >= x_cr2 && clickX <= x_cr2 + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
+            coef_rest -= 0.10;
         }
     }
     // --------------------------------------------------------------------------------
@@ -142,6 +152,51 @@ window.onload = function() {
             ctx.stroke();
             ctx.drawImage(img_restart, ximg_p, yimg_p, larg_p, alt_p);
         }
+        // coeficiente de restituíção
+        //+
+        x_cr = ximg_p;
+        y_cr = canvas.height/5;
+        larg_cr = larg_p/2;
+        alt_cr = larg_p/2;
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(x_cr, y_cr, larg_cr, alt_cr);
+        let tamanho_texto = (alt_cr*1.5).toString();
+        ctx.font = tamanho_texto + "px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText(`+`,x_cr+(1/2)*larg_cr,y_cr+alt_cr);
+        //-
+        x_cr2 = ximg_p + larg_cr;
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(x_cr2, y_cr, larg_cr, alt_cr);
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText(`-`,x_cr2+(1/2)*larg_cr,y_cr+0.80*alt_cr);
+    }
+    // --------------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------------
+    function desenhar_informacoes(){
+        // coeficiente de restituíção
+        const x_cr_info = ximg_p;
+        const y_cr_info = canvas.height/5 + larg_p/2;
+        const larg_cr_info = larg_p;
+        const alt_cr_info = larg_p/2;
+        ctx.save();
+        ctx.fillStyle = 'white';
+        ctx.fillRect(x_cr_info, y_cr_info, larg_cr_info, alt_cr_info);
+        ctx.strokeStyle = 'blue';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x_cr_info, y_cr_info, larg_cr_info, alt_cr_info);
+        ctx.restore();
+        let tamanho_texto = (alt_cr_info).toString();
+        ctx.font = tamanho_texto + "px Arial";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.fillText(coef_rest.toFixed(2),x_cr_info+(1/2)*larg_cr_info,y_cr_info+0.9*alt_cr_info);
+        tamanho_texto = (alt_cr_info/2).toString();
+        ctx.font = tamanho_texto + "px Arial";
+        ctx.fillText('coef_rest',x_cr_info+(1/2)*larg_cr_info,y_cr_info-1.1*alt_cr_info);
     }
     // --------------------------------------------------------------------------------
 
@@ -161,7 +216,16 @@ window.onload = function() {
                 // calcula nova velocidade
                 v = v * coef_rest;
                 // velocidade máxima para não bugar o movimento
-                if (v < r/2) {
+                if (coef_rest >= 0.5 && coef_rest <= 1){
+                    limite = 2;
+                }
+                else if (coef_rest >= 0.3 && coef_rest <= 0.4){
+                    limite = 3;
+                }
+                else if (coef_rest >= 0.0 && coef_rest <= 0.2){
+                    limite = 5;
+                }
+                if (v < r/limite) {
                     parou = true;
                 }
             }
@@ -201,6 +265,7 @@ window.onload = function() {
             atualizar_posicao();
             desenhar_esfera();
             desenhar_botoes();
+            desenhar_informacoes();
         }
         requestAnimationFrame(rodar_simulacao);
     }
