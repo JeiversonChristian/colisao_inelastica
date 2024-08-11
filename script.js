@@ -154,9 +154,9 @@ window.onload = function() {
         }
         // coeficiente de restituíção
         //+
-        x_cr = ximg_p;
+        x_cr = 0.98*ximg_p;
         y_cr = canvas.height/5;
-        larg_cr = larg_p/2;
+        larg_cr = 1.3*larg_p/2;
         alt_cr = larg_p/2;
         ctx.fillStyle = 'blue';
         ctx.fillRect(x_cr, y_cr, larg_cr, alt_cr);
@@ -194,7 +194,7 @@ window.onload = function() {
         ctx.fillStyle = "black";
         ctx.textAlign = "center";
         ctx.fillText(coef_rest.toFixed(2),x_cr_info+(1/2)*larg_cr_info,y_cr_info+0.9*alt_cr_info);
-        tamanho_texto = (alt_cr_info/2).toString();
+        tamanho_texto = (1.5*(alt_cr_info/2)).toString();
         ctx.font = tamanho_texto + "px Arial";
         ctx.fillText('coef_rest',x_cr_info+(1/2)*larg_cr_info,y_cr_info-1.1*alt_cr_info);
     }
