@@ -33,7 +33,7 @@ window.onload = function() {
     v = 0;
     dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
     colidiu = false;
-    coef_rest = 0.9; // coeficiente de restituição
+    coef_rest = 0.7; // coeficiente de restituição
     // --------------------------------------------------------------------------------
 
     // Imagens ------------------------------------------------------------------------
@@ -71,6 +71,8 @@ window.onload = function() {
         
         // play / pause / restart
         if (clickX >= ximg_p && clickX <= ximg_p + larg_p && clickY >= yimg_p && clickY <= yimg_p + alt_p) {
+            som_botao.currentTime = 0;
+            som_botao.play();
             // play
             if (pause == true){
                 play = true;
@@ -93,14 +95,14 @@ window.onload = function() {
                 v = 0;
                 dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
                 colidiu = false;
-                coef_rest = 0.9; // coeficiente de restituição
+                coef_rest = 0.7; // coeficiente de restituição
                 som_colisao.volume = 1;
             }
         }
         // coef_rest
         // +
         if (clickX >= x_cr && clickX <= x_cr + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
-            if (coef_rest <= 0.90){
+            if (coef_rest <= 0.80){
                 coef_rest += 0.10;
                 som_botao.currentTime = 0;
                 som_botao.play();
@@ -236,7 +238,7 @@ window.onload = function() {
                 som_colisao.play();
                 som_colisao.volume = 0.7*som_colisao.volume;
                 // velocidade máxima para não bugar o movimento
-                if (coef_rest >= 0.5 && coef_rest <= 1){
+                if (coef_rest >= 0.5 && coef_rest <= 1.0){
                     limite = 2;
                 }
                 else if (coef_rest >= 0.3 && coef_rest <= 0.4){
