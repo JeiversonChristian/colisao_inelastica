@@ -36,6 +36,8 @@ window.onload = function() {
     dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
     colidiu = false;
     coef_rest = 1; // coeficiente de restituição
+    cor = 'Blue'; // mostrada na informação
+    cor_verdade = 'blue'; // altera a cor mesmo
     // --------------------------------------------------------------------------------
 
     // Imagens ------------------------------------------------------------------------
@@ -144,6 +146,23 @@ window.onload = function() {
                 }
             }
         }
+
+        // cor
+        // azul
+        if (clickX >= x_cor_a && clickX <= x_cor_a + larg_cor && clickY >= y_cor_a && clickY <= y_cor_a + alt_cor) {
+            som_botao.currentTime = 0;
+            som_botao.play();
+            cor = 'Blue';
+            cor_verdade = 'blue';
+        }
+
+        // vermelho
+        if (clickX >= x_cor_r && clickX <= x_cor_r + larg_cor && clickY >= y_cor_r && clickY <= y_cor_r + alt_cor) {
+            som_botao.currentTime = 0;
+            som_botao.play();
+            cor = 'Red';
+            cor_verdade = 'red';
+        }
     }
     // --------------------------------------------------------------------------------
 
@@ -160,7 +179,7 @@ window.onload = function() {
         // esfera
         ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI*2, false);
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = cor_verdade;
         ctx.fill();
         ctx.stroke();
     }
@@ -204,7 +223,7 @@ window.onload = function() {
         y_cr = canvas.height/5;
         larg_cr = 1.3*larg_p/2;
         alt_cr = larg_p/2;
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = cor_verdade;
         ctx.fillRect(x_cr, y_cr, larg_cr, alt_cr);
         let tamanho_texto = (alt_cr*1.5).toString();
         ctx.font = tamanho_texto + "px Arial";
@@ -213,11 +232,27 @@ window.onload = function() {
         ctx.fillText(`+`,x_cr+(1/2)*larg_cr,y_cr+alt_cr);
         //-
         x_cr2 = 0.97*ximg_p + larg_cr;
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = cor_verdade;
         ctx.fillRect(x_cr2, y_cr, larg_cr, alt_cr);
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.fillText(`-`,x_cr2+(1/2)*larg_cr,y_cr+0.80*alt_cr);
+
+        // cor
+        // azul
+        x_cor_a = 0.95*ximg_p;
+        y_cor_a = canvas.height/2.525;
+        larg_cor = 1.3*larg_p/2;
+        alt_cor = larg_p/2;
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(x_cor_a, y_cor_a, larg_cor, alt_cor);
+        // vermelho
+        x_cor_r = 0.97*ximg_p + larg_cr;
+        y_cor_r = canvas.height/2.525;
+        larg_cor = 1.3*larg_p/2;
+        alt_cor = larg_p/2;
+        ctx.fillStyle = 'red';
+        ctx.fillRect(x_cor_r, y_cor_r, larg_cor, alt_cor);
     }
     // --------------------------------------------------------------------------------
 
@@ -231,7 +266,7 @@ window.onload = function() {
         ctx.save();
         ctx.fillStyle = 'white';
         ctx.fillRect(x_cr_info, y_cr_info, larg_cr_info, alt_cr_info);
-        ctx.strokeStyle = 'blue';
+        ctx.strokeStyle = cor_verdade;
         ctx.lineWidth = 1;
         ctx.strokeRect(x_cr_info, y_cr_info, larg_cr_info, alt_cr_info);
         ctx.restore();
@@ -243,6 +278,27 @@ window.onload = function() {
         tamanho_texto = (1.5*(alt_cr_info/2)).toString();
         ctx.font = tamanho_texto + "px Arial";
         ctx.fillText('coef_rest',x_cr_info+(1/2)*larg_cr_info,y_cr_info-1.1*alt_cr_info);
+
+        // cor
+        const x_cor_info = 0.975*ximg_p;
+        const y_cor_info = canvas.height/5 + 5*larg_p/2;
+        const larg_cor_info = larg_p;
+        const alt_cor_info = larg_p/2;
+        ctx.save();
+        ctx.fillStyle = 'white';
+        ctx.fillRect(x_cor_info, y_cor_info, larg_cor_info, alt_cor_info);
+        ctx.strokeStyle = cor_verdade;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x_cor_info, y_cor_info, larg_cor_info, alt_cor_info);
+        ctx.restore();
+        let tamanho_texto_cor = (alt_cor_info).toString();
+        ctx.font = tamanho_texto_cor + "px Arial";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.fillText(cor,x_cor_info+(1/2)*larg_cor_info,y_cor_info+0.9*alt_cor_info);
+        tamanho_texto_cor = (1.5*(alt_cor_info/2)).toString();
+        ctx.font = tamanho_texto_cor + "px Arial";
+        ctx.fillText('Cor',x_cor_info+(1/2)*larg_cor_info,y_cor_info-1.1*alt_cor_info);
     }
     // --------------------------------------------------------------------------------
 
