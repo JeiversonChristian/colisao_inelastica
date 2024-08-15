@@ -61,7 +61,7 @@ window.onload = function() {
     const som_botao = new Audio('sons/botao.mp3');
     som_botao.volume = 0.3;
     const som_erro = new Audio('sons/erro.mp3');
-    som_botao.volume = 0.3;
+    som_erro.volume = 0.2;
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
@@ -119,6 +119,10 @@ window.onload = function() {
                     som_botao.currentTime = 0;
                     som_botao.play();
                 }
+                else {
+                    som_erro.currentTime = 0;
+                    som_erro.play();
+                }
             }
         }
         // -
@@ -133,6 +137,10 @@ window.onload = function() {
                     coef_rest -= 0.10;
                     som_botao.currentTime = 0;
                     som_botao.play();
+                }
+                else {
+                    som_erro.currentTime = 0;
+                    som_erro.play();
                 }
             }
         }
