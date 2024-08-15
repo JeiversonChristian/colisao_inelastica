@@ -266,7 +266,7 @@ window.onload = function() {
         // coeficiente de restituíção
         //+
         x_cr = 0.95*ximg_p;
-        y_cr = canvas.height/5;
+        y_cr = 0.8*canvas.height/4;
         larg_cr = 1.3*larg_p/2;
         alt_cr = larg_p/2;
         ctx.fillStyle = cor_verdade;
