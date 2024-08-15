@@ -21,6 +21,8 @@ window.onload = function() {
     play = false;
     pause = true;
     parou = false;
+    let recuperar_pos = false;
+    let pos_memoria = 0;
     // --------------------------------------------------------------------------------
 
     // Esfera -------------------------------------------------------------------------
@@ -33,7 +35,7 @@ window.onload = function() {
     v = 0;
     dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
     colidiu = false;
-    coef_rest = 0.7; // coeficiente de restituição
+    coef_rest = 1; // coeficiente de restituição
     // --------------------------------------------------------------------------------
 
     // Imagens ------------------------------------------------------------------------
@@ -95,14 +97,16 @@ window.onload = function() {
                 v = 0;
                 dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
                 colidiu = false;
-                coef_rest = 0.7; // coeficiente de restituição
+                //coef_rest = 0.7; // coeficiente de restituição
                 som_colisao.volume = 1;
+                recuperar_pos = false;
+                pos_memoria = 0;
             }
         }
         // coef_rest
         // +
         if (clickX >= x_cr && clickX <= x_cr + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
-            if (coef_rest <= 0.80){
+            if (coef_rest <= 0.90){
                 coef_rest += 0.10;
                 som_botao.currentTime = 0;
                 som_botao.play();
@@ -221,10 +225,17 @@ window.onload = function() {
     // --------------------------------------------------------------------------------
     function atualizar_posicao(){
         if (parou == false && play == true && pause == false) {
+            // recupera a posição antes de colidir quando é necessário
+            if (recuperar_pos == true){
+                recuperar_pos = false;
+                y = pos_memoria;
+            }
             // atualiza velocidade de acordo com a gravidade e a direção
             v += g * dir_v; 
             // se chegou no chão (caindo)
             if (y + r + v >= canvas.height && dir_v == 1) {
+                // guarda a posição antes de colidir, para recuperá-la depois
+                pos_memoria = y;
                 // gruda na parede
                 y = canvas.height - r;
                 // acusa colisão
@@ -236,7 +247,9 @@ window.onload = function() {
                 // solta o som e o diminui para a próxima colisao
                 som_colisao.currentTime = 0;
                 som_colisao.play();
-                som_colisao.volume = 0.7*som_colisao.volume;
+                if (coef_rest < 1){
+                    som_colisao.volume = 0.7*som_colisao.volume;
+                }
                 // velocidade máxima para não bugar o movimento
                 if (coef_rest >= 0.5 && coef_rest <= 1.0){
                     limite = 2;
@@ -260,9 +273,14 @@ window.onload = function() {
                 // tem que cair
                 dir_v = 1;
             }
+
             // se mudar de direção quando caiu, então tem que desgrudar do chão
             // ou seja, a colisão já aconteceu e tem que ser desconsiderada
             if (dir_v == -1){
+                // se desgrudou e foi logo após colidir, avisa que é para recuperar a posição que tinha antes de colidir
+                if (colidiu == true){
+                    recuperar_pos = true;
+                }
                 colidiu = false;
             }
         }
