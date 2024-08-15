@@ -327,7 +327,7 @@ window.onload = function() {
     function desenhar_informacoes(){
         // coeficiente de restituíção
         const x_cr_info = 0.975*ximg_p;
-        const y_cr_info = canvas.height/5 + larg_p/2;
+        const y_cr_info = canvas.height/4// + larg_p/2;
         const larg_cr_info = larg_p;
         const alt_cr_info = larg_p/2;
         ctx.save();
