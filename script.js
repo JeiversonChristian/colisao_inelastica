@@ -348,7 +348,7 @@ window.onload = function() {
 
         // cor
         const x_cor_info = 0.975*ximg_p;
-        const y_cor_info = canvas.height/5 + 5*larg_p/2;
+        const y_cor_info = 1.8*y_cr_info//canvas.height/5 + 5*larg_p/2;
         const larg_cor_info = larg_p;
         const alt_cor_info = larg_p/2;
         ctx.save();
@@ -369,7 +369,7 @@ window.onload = function() {
 
         // massa
         const x_m_info = 0.975*ximg_p;
-        const y_m_info = canvas.height/5 + 9*larg_p/2;
+        const y_m_info = 2.6*y_cr_info//canvas.height/5 + 9*larg_p/2;
         const larg_m_info = larg_p;
         const alt_m_info = larg_p/2;
         ctx.save();
