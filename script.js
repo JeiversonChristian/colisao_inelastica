@@ -51,8 +51,8 @@ window.onload = function() {
     // coordenadas dos botões de play, pause e restart:
     const ximg_p = canvas.width - 60;
     const yimg_p = canvas.height - 60;
-    const larg_p = canvas.width/11;
-    const alt_p = canvas.width/11;
+    const larg_p = canvas.width/9;
+    const alt_p = canvas.width/9;
     // --------------------------------------------------------------------------------
 
     // Sons ---------------------------------------------------------------------------
@@ -200,7 +200,7 @@ window.onload = function() {
         }
         // coeficiente de restituíção
         //+
-        x_cr = 0.98*ximg_p;
+        x_cr = 0.95*ximg_p;
         y_cr = canvas.height/5;
         larg_cr = 1.3*larg_p/2;
         alt_cr = larg_p/2;
@@ -212,7 +212,7 @@ window.onload = function() {
         ctx.textAlign = "center";
         ctx.fillText(`+`,x_cr+(1/2)*larg_cr,y_cr+alt_cr);
         //-
-        x_cr2 = ximg_p + larg_cr;
+        x_cr2 = 0.97*ximg_p + larg_cr;
         ctx.fillStyle = 'blue';
         ctx.fillRect(x_cr2, y_cr, larg_cr, alt_cr);
         ctx.fillStyle = "white";
@@ -224,7 +224,7 @@ window.onload = function() {
     // --------------------------------------------------------------------------------
     function desenhar_informacoes(){
         // coeficiente de restituíção
-        const x_cr_info = ximg_p;
+        const x_cr_info = 0.975*ximg_p;
         const y_cr_info = canvas.height/5 + larg_p/2;
         const larg_cr_info = larg_p;
         const alt_cr_info = larg_p/2;
