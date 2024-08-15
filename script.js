@@ -287,14 +287,14 @@ window.onload = function() {
         // cor
         // azul
         x_cor_a = 0.95*ximg_p;
-        y_cor_a = 2*y_cr//canvas.height/2.525;
+        y_cor_a = y_cr + 3*larg_cr//canvas.height/2.525;
         larg_cor = 1.3*larg_p/2;
         alt_cor = larg_p/2;
         ctx.fillStyle = 'blue';
         ctx.fillRect(x_cor_a, y_cor_a, larg_cor, alt_cor);
         // vermelho
         x_cor_r = 0.97*ximg_p + larg_cr;
-        y_cor_r = 2*y_cr//canvas.height/2.525;
+        y_cor_r = y_cr + 3*larg_cr//canvas.height/2.525;
         larg_cor = 1.3*larg_p/2;
         alt_cor = larg_p/2;
         ctx.fillStyle = 'red';
@@ -303,7 +303,7 @@ window.onload = function() {
         // massa
         //+
         x_m = 0.95*ximg_p;
-        y_m = 3*y_cr//canvas.height/1.6725;
+        y_m = y_cr + 6.1*larg_cr//canvas.height/1.6725;
         larg_m = 1.3*larg_p/2;
         alt_m = larg_p/2;
         ctx.fillStyle = cor_verdade;
