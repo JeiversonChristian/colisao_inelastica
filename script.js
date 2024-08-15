@@ -266,7 +266,7 @@ window.onload = function() {
         // coeficiente de restituíção
         //+
         x_cr = 0.95*ximg_p;
-        y_cr = 0.8*canvas.height/4;
+        y_cr = canvas.height/4 - larg_p/2;;
         larg_cr = 1.3*larg_p/2;
         alt_cr = larg_p/2;
         ctx.fillStyle = cor_verdade;
@@ -348,7 +348,7 @@ window.onload = function() {
 
         // cor
         const x_cor_info = 0.975*ximg_p;
-        const y_cor_info = 1.8*y_cr_info//canvas.height/5 + 5*larg_p/2;
+        const y_cor_info = y_cr_info + 2*larg_cr_info//canvas.height/5 + 5*larg_p/2;
         const larg_cor_info = larg_p;
         const alt_cor_info = larg_p/2;
         ctx.save();
@@ -369,7 +369,7 @@ window.onload = function() {
 
         // massa
         const x_m_info = 0.975*ximg_p;
-        const y_m_info = 2.6*y_cr_info//canvas.height/5 + 9*larg_p/2;
+        const y_m_info = y_cr_info + 4*larg_cr_info//canvas.height/5 + 9*larg_p/2;
         const larg_m_info = larg_p;
         const alt_m_info = larg_p/2;
         ctx.save();
