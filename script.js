@@ -94,7 +94,7 @@ window.onload = function() {
                 play = false;
                 pause = true;
                 parou = false;
-                m = 100; // massa
+                //m = 100; // massa
                 r = (m**(1/2))*(1.5); // raio
                 dist_teto = r; // distância inicial até o "teto"
                 y = dist_teto;
@@ -162,6 +162,52 @@ window.onload = function() {
             som_botao.play();
             cor = 'Red';
             cor_verdade = 'red';
+        }
+
+        // massa
+        // +
+        if (clickX >= x_m && clickX <= x_m + larg_m && clickY >= y_m && clickY <= y_m + alt_m) {
+            if ( pause == false){
+                // não é pra altear parâmetros com jogo em movimento
+                som_erro.currentTime = 0;
+                som_erro.play();
+            }
+            else {
+                if (m <= 980){
+                    m += 10;
+                    r = (m**(1/2))*(1.5); // raio
+                    dist_teto = r; // distância inicial até o "teto"
+                    y = dist_teto;
+                    som_botao.currentTime = 0;
+                    som_botao.play();
+                }
+                else {
+                    som_erro.currentTime = 0;
+                    som_erro.play();
+                }
+            }
+        }
+        // -
+        if (clickX >= x_m2 && clickX <= x_m2 + larg_m && clickY >= y_m && clickY <= y_m + alt_m) {
+            if ( pause == false){
+                // não é pra altear parâmetros com jogo em movimento
+                som_erro.currentTime = 0;
+                som_erro.play();
+            }
+            else {
+                if (m >= 20){
+                    m -= 10;
+                    r = (m**(1/2))*(1.5); // raio
+                    dist_teto = r; // distância inicial até o "teto"
+                    y = dist_teto;
+                    som_botao.currentTime = 0;
+                    som_botao.play();
+                }
+                else {
+                    som_erro.currentTime = 0;
+                    som_erro.play();
+                }
+            }
         }
     }
     // --------------------------------------------------------------------------------
@@ -241,18 +287,39 @@ window.onload = function() {
         // cor
         // azul
         x_cor_a = 0.95*ximg_p;
-        y_cor_a = canvas.height/2.525;
+        y_cor_a = 2*y_cr//canvas.height/2.525;
         larg_cor = 1.3*larg_p/2;
         alt_cor = larg_p/2;
         ctx.fillStyle = 'blue';
         ctx.fillRect(x_cor_a, y_cor_a, larg_cor, alt_cor);
         // vermelho
         x_cor_r = 0.97*ximg_p + larg_cr;
-        y_cor_r = canvas.height/2.525;
+        y_cor_r = 2*y_cr//canvas.height/2.525;
         larg_cor = 1.3*larg_p/2;
         alt_cor = larg_p/2;
         ctx.fillStyle = 'red';
         ctx.fillRect(x_cor_r, y_cor_r, larg_cor, alt_cor);
+
+        // massa
+        //+
+        x_m = 0.95*ximg_p;
+        y_m = 3*y_cr//canvas.height/1.6725;
+        larg_m = 1.3*larg_p/2;
+        alt_m = larg_p/2;
+        ctx.fillStyle = cor_verdade;
+        ctx.fillRect(x_m, y_m, larg_m, alt_m);
+        let tamanho_texto_m = (alt_m*1.5).toString();
+        ctx.font = tamanho_texto_m + "px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText(`+`,x_m+(1/2)*larg_m,y_m+alt_m);
+        //-
+        x_m2 = 0.97*ximg_p + larg_m;
+        ctx.fillStyle = cor_verdade;
+        ctx.fillRect(x_m2, y_m, larg_m, alt_m);
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText(`-`,x_m2+(1/2)*larg_m,y_m+0.80*alt_m);
     }
     // --------------------------------------------------------------------------------
 
@@ -299,6 +366,28 @@ window.onload = function() {
         tamanho_texto_cor = (1.5*(alt_cor_info/2)).toString();
         ctx.font = tamanho_texto_cor + "px Arial";
         ctx.fillText('Cor',x_cor_info+(1/2)*larg_cor_info,y_cor_info-1.1*alt_cor_info);
+
+        // massa
+        const x_m_info = 0.975*ximg_p;
+        const y_m_info = canvas.height/5 + 9*larg_p/2;
+        const larg_m_info = larg_p;
+        const alt_m_info = larg_p/2;
+        ctx.save();
+        ctx.fillStyle = 'white';
+        ctx.fillRect(x_m_info, y_m_info, larg_m_info, alt_m_info);
+        ctx.strokeStyle = cor_verdade;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x_m_info, y_m_info, larg_m_info, alt_m_info);
+        ctx.restore();
+        let tamanho_texto_m = (0.75*alt_m_info).toString();
+        ctx.font = tamanho_texto_m + "px Arial";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        texto_massa = m.toString() + 'kg'
+        ctx.fillText(texto_massa,x_m_info+(1/2)*larg_m_info,y_m_info+0.9*alt_m_info);
+        tamanho_texto_m = (1.5*(alt_m_info/2)).toString();
+        ctx.font = tamanho_texto_m + "px Arial";
+        ctx.fillText('Massa',x_m_info+(1/2)*larg_m_info,y_m_info-1.1*alt_m_info);
     }
     // --------------------------------------------------------------------------------
 
@@ -384,8 +473,8 @@ window.onload = function() {
             limpar_tela();
             atualizar_posicao();
             desenhar_esfera();
-            desenhar_botoes();
             desenhar_informacoes();
+            desenhar_botoes();
         }
         requestAnimationFrame(rodar_simulacao);
     }
