@@ -23,6 +23,10 @@ window.onload = function() {
     parou = false;
     let recuperar_pos = false;
     let pos_memoria = 0;
+
+    play_music = true;
+    pause_music = false;
+    num_music = 1;
     // --------------------------------------------------------------------------------
 
     // Esfera -------------------------------------------------------------------------
@@ -63,7 +67,22 @@ window.onload = function() {
     const som_botao = new Audio('sons/botao.mp3');
     som_botao.volume = 0.3;
     const som_erro = new Audio('sons/erro.mp3');
-    som_erro.volume = 0.2;
+    som_erro.volume = 0.15;
+    // --------------------------------------------------------------------------------
+
+    // Músicas ---------------------------------------------------------------------------
+    const musica1 = new Audio('musicas/Blind Memories - Cheel.mp3');
+    const musica2 = new Audio('musicas/Blue Dream - Cheel.mp3');
+    const musica3 = new Audio('musicas/Caballero - Ofshane.mp3');
+    const musica4 = new Audio('musicas/Papov - Yung Logos.mp3');
+    const musica5 = new Audio('musicas/Soft Feeling - Cheel.mp3');
+    const musica6 = new Audio('musicas/TrueArtRealAffectionPart4 - Noir Et Blanc Vie.mp3');
+    musica1.volume = 0.1;
+    musica2.volume = 0.1;
+    musica3.volume = 0.1;
+    musica4.volume = 0.1;
+    musica5.volume = 0.1;
+    musica6.volume = 0.1;
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
@@ -464,8 +483,19 @@ window.onload = function() {
     // --------------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------------
+    function gerencia_musicas(){
+        if (play_music == true){
+            if (num_music == 1){
+                musica1.play();
+            }
+        }
+    }
+    // --------------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------------
     function rodar_simulacao(timestamp){
         // se já passou mais tempo do que o tamanho de um dos 30 pedacinhos de tempo definidos acima
+        gerencia_musicas();
         if (timestamp - window.lastTime >= window.interval) {
             window.lastTime = timestamp;
             // atualiza esse tempo como o tempo atual e depois espera passar de novo
