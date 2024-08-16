@@ -1,9 +1,5 @@
 Colisão Inelástica
 Simulção de uma colisão inelástica de uma bolinha caindo no chão
-ideias:
-colocar botão para escolher gravidade: <||> Terra
-ao alterar a gravidade, altera o ambiente
-brincar que o material resiste até ao sol
-colocar botão de zoom: +- zoom
-colocar botão de posição: +- Posição
-colocar botão de massa: +- Massa
+
+projeto PAUSADO:
+Motivo: Encontrei um bug que não sei resolver - quando se coloca o coef_rest igual a 0.20 na primeira vez que se vai rodar a simulação, ela trava quando a bolinha toca o chão.

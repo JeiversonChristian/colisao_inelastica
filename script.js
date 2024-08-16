@@ -21,6 +21,8 @@ window.onload = function() {
     play = false;
     pause = true;
     parou = false;
+    comecou = false;
+    recomecou = false;
     let recuperar_pos = false;
     let pos_memoria = 0;
 
@@ -39,7 +41,7 @@ window.onload = function() {
     v = 0;
     dir_v = 1; // direção da velocidade: 1 -> pra baixo; -1 -> pra cima
     colidiu = false;
-    coef_rest = 1; // coeficiente de restituição
+    coef_rest = 0.7; // coeficiente de restituição
     cor = 'Blue'; // mostrada na informação
     cor_verdade = 'blue'; // altera a cor mesmo
     // --------------------------------------------------------------------------------
@@ -59,6 +61,7 @@ window.onload = function() {
     const yimg_p = canvas.height - 60;
     const larg_p = canvas.width/9;
     const alt_p = canvas.width/9;
+    const ximg_rest = canvas.width - 60;
     // --------------------------------------------------------------------------------
 
     // Sons ---------------------------------------------------------------------------
@@ -94,7 +97,7 @@ window.onload = function() {
         const clickX = clientX - rect.left;
         const clickY = clientY - rect.top;
         
-        // play / pause / restart
+        // play / pause
         if (clickX >= ximg_p && clickX <= ximg_p + larg_p && clickY >= yimg_p && clickY <= yimg_p + alt_p) {
             som_botao.currentTime = 0;
             som_botao.play();
@@ -102,17 +105,23 @@ window.onload = function() {
             if (pause == true){
                 play = true;
                 pause = false;
+                comecou = true;
+                recomecou = false;
             }
             // pause
             else if (play == true){
                 pause = true;
                 play =  false;
             }
-            // restart
+        }
+        // restart
+        if (clickX >= ximg_rest && clickX <= ximg_rest + larg_p && clickY >= yimg_p && clickY <= yimg_p + alt_p) {
             if (parou == true){
                 play = false;
                 pause = true;
                 parou = false;
+                comecou = false;
+                recomecou = true;
                 //m = 100; // massa
                 r = (m**(1/2))*(1.5); // raio
                 dist_teto = r; // distância inicial até o "teto"
@@ -126,15 +135,11 @@ window.onload = function() {
                 pos_memoria = 0;
             }
         }
+
         // coef_rest
         // +
         if (clickX >= x_cr && clickX <= x_cr + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
-            if ( pause == false){
-                // não é pra altear parâmetros com jogo em movimento
-                som_erro.currentTime = 0;
-                som_erro.play();
-            }
-            else {
+            if (comecou == false){
                 if (coef_rest <= 0.90){
                     coef_rest += 0.10;
                     som_botao.currentTime = 0;
@@ -145,15 +150,14 @@ window.onload = function() {
                     som_erro.play();
                 }
             }
-        }
-        // -
-        if (clickX >= x_cr2 && clickX <= x_cr2 + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
-            if ( pause == false){
-                // não é pra altear parâmetros com jogo em movimento
+            else {
                 som_erro.currentTime = 0;
                 som_erro.play();
             }
-            else {
+        }
+        // -
+        if (clickX >= x_cr2 && clickX <= x_cr2 + larg_cr && clickY >= y_cr && clickY <= y_cr + alt_cr) {
+            if (comecou == false){
                 if (coef_rest >= 0.10){
                     coef_rest -= 0.10;
                     som_botao.currentTime = 0;
@@ -163,6 +167,10 @@ window.onload = function() {
                     som_erro.currentTime = 0;
                     som_erro.play();
                 }
+            }
+            else {
+                som_erro.currentTime = 0;
+                som_erro.play();
             }
         }
 
@@ -186,46 +194,42 @@ window.onload = function() {
         // massa
         // +
         if (clickX >= x_m && clickX <= x_m + larg_m && clickY >= y_m && clickY <= y_m + alt_m) {
-            if ( pause == false){
-                // não é pra altear parâmetros com jogo em movimento
-                som_erro.currentTime = 0;
-                som_erro.play();
+            if (m <= 980){
+                m += 10;
+                r = (m**(1/2))*(1.5); // raio
+                dist_teto = r; // distância inicial até o "teto"
+                if (y - r <= 0){
+                    y = dist_teto;
+                }
+                if (y + r >= canvas.height){
+                    y = canvas.height - r;
+                }
+                som_botao.currentTime = 0;
+                som_botao.play();
             }
             else {
-                if (m <= 980){
-                    m += 10;
-                    r = (m**(1/2))*(1.5); // raio
-                    dist_teto = r; // distância inicial até o "teto"
-                    y = dist_teto;
-                    som_botao.currentTime = 0;
-                    som_botao.play();
-                }
-                else {
-                    som_erro.currentTime = 0;
-                    som_erro.play();
-                }
+                som_erro.currentTime = 0;
+                som_erro.play();
             }
         }
         // -
         if (clickX >= x_m2 && clickX <= x_m2 + larg_m && clickY >= y_m && clickY <= y_m + alt_m) {
-            if ( pause == false){
-                // não é pra altear parâmetros com jogo em movimento
-                som_erro.currentTime = 0;
-                som_erro.play();
+            if (m >= 20){
+                m -= 10;
+                r = (m**(1/2))*(1.5); // raio
+                dist_teto = r; // distância inicial até o "teto"
+                if (y - r <= 0){
+                    y = dist_teto;
+                } 
+                if (y + r >= canvas.height){
+                    y = canvas.height - r;
+                }               
+                som_botao.currentTime = 0;
+                som_botao.play();
             }
             else {
-                if (m >= 20){
-                    m -= 10;
-                    r = (m**(1/2))*(1.5); // raio
-                    dist_teto = r; // distância inicial até o "teto"
-                    y = dist_teto;
-                    som_botao.currentTime = 0;
-                    som_botao.play();
-                }
-                else {
-                    som_erro.currentTime = 0;
-                    som_erro.play();
-                }
+                som_erro.currentTime = 0;
+                som_erro.play();
             }
         }
     }
@@ -255,6 +259,7 @@ window.onload = function() {
         xfundo_p = ximg_p + larg_p/2;
         yfundo_p = yimg_p + alt_p/2;
         rfundo_p = larg_p/2;
+        
         // play
         if (play == false && parou == false){ 
             ctx.beginPath();
@@ -281,6 +286,20 @@ window.onload = function() {
             ctx.fill();
             ctx.stroke();
             ctx.drawImage(img_restart, ximg_p, yimg_p, larg_p, alt_p);
+            //if (comecou == true && pause == true && coef_rest >= 0.98) {
+                //ctx.arc(xfundo_p - 2*rfundo_p, yfundo_p, rfundo_p, 0, Math.PI*2, false);
+                //ctx.fillStyle = 'orange';
+                //ctx.fill();
+                //ctx.stroke();
+                //ctx.drawImage(img_restart, ximg_p - 2*rfundo_p, yimg_p, larg_p, alt_p);
+            //}
+            //else{
+                //ctx.arc(xfundo_p, yfundo_p, rfundo_p, 0, Math.PI*2, false);
+                //ctx.fillStyle = 'orange';
+                //ctx.fill();
+                //ctx.stroke();
+                //ctx.drawImage(img_restart, ximg_p, yimg_p, larg_p, alt_p);
+            //}
         }
         // coeficiente de restituíção
         //+
@@ -435,7 +454,7 @@ window.onload = function() {
                 // solta o som e o diminui para a próxima colisao
                 som_colisao.currentTime = 0;
                 som_colisao.play();
-                if (coef_rest < 1){
+                if (coef_rest < 0.98){ // não sei porque com 1 não deu certo
                     som_colisao.volume = 0.7*som_colisao.volume;
                 }
                 // velocidade máxima para não bugar o movimento
@@ -450,6 +469,7 @@ window.onload = function() {
                 }
                 if (v < r/limite) {
                     parou = true;
+                    comecou = false;
                 }
             }
             // so mexe se não colidiu, porque se colidir, tem que grudar na parede primeiro
